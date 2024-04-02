@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Metadata -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title id="titleTimer">Pomodoro Timer</title>
+
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="icon" type="image" href="../public/assets/img/logo.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <!-- Logo -->
+      <div class="navbar-brand">
+        <svg width="50px" height="50px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16zM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12zm10-6a1 1 0 0 1 1 1v4.586l2.707 2.707a1 1 0 0 1-1.414 1.414l-3-3A1 1 0 0 1 11 12V7a1 1 0 0 1 1-1z"
+            fill="var(--my-white)"
+          />
+        </svg>
+      </div>
+      <div class="navbar-end">
+        <a class="navbar-item" id="aboutPomodoro" title="About Pomodoro">
+          <span class="icon-text">
+            <span class="icon"><i class="fas fa-info-circle"></i></span>
+            <span>About Pomodoro</span>
+          </span>
+        </a>
+        <a class="navbar-item" id="openSettings" title="Settings">
+          <span class="icon-text">
+            <span class="icon"><i class="fas fa-cog"></i></span>
+            <span>Settings</span>
+          </span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Timer Section -->
+    <section class="section">
+      <div class="container">
+        <div class="buttons">
+          <button id="pomodoro" class="button is-selected" data-duration="25" data-type="pomodoro">Pomodoro: 0</button>
+          <button id="shortBreak" class="button" data-duration="5" data-type="short-break">Short Break: 0</button>
+          <button id="longBreak" class="button" data-duration="15" data-type="long-break">Long Break: 0</button>
+        </div>
+
+        <!-- Timer Display -->
+        <div class="timer-display">
+          <p id="timer" class="title">25:00</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div id="progressBarContainer" class="progress-bar-container">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
+
+        <!-- Button to Start Timer -->
+        <div class="button-container">
+          <button class="pushable" id="startButton">
+            <span class="shadow"></span>
+            <span class="edge"></span>
+            <span class="front"> Start </span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tasks Section -->
+    <div class="app-container">
+      <div class="app-header-container">
+        <h2 class="app-header">Tasks:</h2>
+
+        <div class="dropdown">
+          <button class="dropbtn"></button>
+          <div id="myDropdown" class="dropdown-content">
+            <a href="#" id="toggleCompletedTasks"><i class="fa-solid fa-eye-slash"></i>Hide Completed Tasks</a>
+            <a href="#" id="sortCompletedTasks"><i class="fa-solid fa-sort"></i><span> Sort Completed Tasks</span></a>
+            <a href="#" id="deleteCompletedTasks"><i class="fa-solid fa-trash"> </i><span> Delete Completed Tasks</span></a>
+            <a href="#" id="deleteAllTasks"><i class="fa-solid fa-trash"></i> <span> Delete All Tasks</span></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input for New Tasks -->
+      <div class="todo-input-container">
+        <input type="text" id="newTaskInput" placeholder="add your tasks" />
+        <button id="addTaskButton">Add</button>
+      </div>
+
+      <!-- List of Tasks -->
+      <ul id="todoList"></ul>
+
+      <!-- Container for Completed Tasks (hidden by default) -->
+      <div id="completedTasksContainer" class="hidden"></div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal-background"></div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Settings</p>
+          <button class="delete" aria-label="close"><i class="fa-solid fa-xmark"></i></button>
+        </header>
+        <div class="modal-card-body">
+          <div class="settings-columns">
+            <div class="settings-menu">
+              <!-- Menu List -->
+              <ul class="menu-list">
+                <li><a href="#" class="is-active" data-category="timer">Timer</a></li>
+                <li><a href="#" data-category="sounds">Sounds</a></li>
+                <li><a href="#" data-category="themes">Themes</a></li>
+                <li><a href="#" data-category="general">Feedback</a></li>
+              </ul>
+            </div>
+            <div class="settings-content" id="settingsContent">
+              <!-- Feedback -->
+              <div class="settings-section is-active" id="general-settings">
+                <div class="avatar-container" style="text-align: center; margin-bottom: 20px">
+                  <img src="./assets/img/avatarDefault.png" alt="Your Avatar" style="border-radius: 50%; width: 80px; height: 80px" />
+                </div>
+
+                <h3 style="text-align: center">Get in Touch</h3>
+                <p style="text-align: center; padding: 0 15px; font-weight: 500">
+                  I'd love to hear your thoughts, suggestions, or any feedback you have. Feel free to reach out by sending me an email!
+                </p>
+
+                <div class="settings-item" id="sendFeedback">
+                  <a
+                    href="mailto:sebastianingebrigtsen01@gmail.com?subject=Feedback for Pomodoro App&body=Hi, I would like to provide the following feedback:"
+                    class="button"
+                    id="sendFeedback"
+                  >
+                    <span>Send Email <i class="fa-regular fa-paper-plane"></i></span>
+                  </a>
+                </div>
+              </div>
+              <!-- Timer settings -->
+              <div class="settings-section" id="timer-settings">
+                <label class="label" id="timerTitle">Time (minutes)</label>
+
+                <div class="timer-settings-row">
+                  <div class="timer-setting">
+                    <label for="pomodoroDuration" class="label">Pomodoro</label>
+                    <input class="input" type="number" value="25" id="pomodoroDuration" min="1" />
+                  </div>
+                  <div class="timer-setting">
+                    <label for="shortBreakDuration" class="label">Short Break</label>
+                    <input class="input" type="number" value="5" id="shortBreakDuration" min="1" />
+                  </div>
+                  <div class="timer-setting">
+                    <label for="longBreakDuration" class="label">Long Break</label>
+                    <input class="input" type="number" value="15" id="longBreakDuration" min="1" />
+                  </div>
+                </div>
+
+                <div class="settings-item">
+                  <label for="autoStartBreaks" class="label">Auto Start Breaks</label>
+                  <label class="switch">
+                    <input type="checkbox" id="autoStartBreaks" name="autoStartBreaks" />
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+
+                <div class="settings-item">
+                  <label for="autoStartPomodoros" class="label">Auto Start Pomodoros</label>
+                  <label class="switch">
+                    <input type="checkbox" id="autoStartPomodoros" name="autoStartPomodoros" />
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+
+                <div class="settings-item">
+                  <label for="longBreakInterval" class="label">Long Break Interval</label>
+                  <input class="input" type="number" value="4" id="longBreakInterval" min="1" />
+                </div>
+              </div>
+
+              <!-- Sound settings -->
+              <div class="settings-section is-hidden" id="sounds-settings">
+                <div class="settings-item">
+                  <label for="alarmSound" class="label">Alarm Sound</label>
+                  <div class="select">
+                    <select id="alarmSound">
+                      <option>Default</option>
+                      <option>None</option>
+                      <option>Bell</option>
+                      <option>Birds</option>
+                      <option>Buzzer</option>
+                      <option>Alarm</option>
+                      <option>Warning</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="settings-item">
+                  <label for="volume" class="label">Volume</label>
+                  <span id="volumeValue" class="volume-value">50</span>
+                  <input class="volumeBar" type="range" id="volume" min="0" max="100" value="50" />
+                </div>
+              </div>
+
+              <!-- Themes settings -->
+              <div class="settings-section is-hidden" id="themes-settings">
+                <div class="field">
+                  <label class="label">Choose Theme</label>
+                  <div class="theme-swatches">
+                    <div class="theme-swatch" data-theme="Blue"></div>
+                    <div class="theme-swatch" data-theme="Green"></div>
+                    <div class="theme-swatch" data-theme="Red"></div>
+                    <div class="theme-swatch" data-theme="Purple"></div>
+                    <div class="theme-swatch" data-theme="Orange"></div>
+                    <div class="theme-swatch" data-theme="Teal"></div>
+                    <div class="theme-swatch" data-theme="Yellow"></div>
+                    <div class="theme-swatch" data-theme="Pink"></div>
+                    <div class="theme-swatch" data-theme="Grey"></div>
+                    <div class="theme-swatch" data-theme="Brown"></div>
+                    <div class="theme-swatch" data-theme="Cyan"></div>
+                    <div class="theme-swatch" data-theme="Magenta"></div>
+                    <div class="theme-swatch" data-theme="Lime"></div>
+                    <div class="theme-swatch" data-theme="Navy"></div>
+                    <div class="theme-swatch" data-theme="Olive"></div>
+                    <div class="theme-swatch" data-theme="Crimson"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal Footer -->
+      <footer class="modal-card-foot">
+        <button class="button save-button">Save</button>
+      </footer>
+    </div>
+
+    <!-- About Pomodoro Modal -->
+    <div id="aboutPomodoroModal" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">About the Pomodoro Technique</p>
+          <button class="delete" aria-label="close"><i class="fa-solid fa-xmark"></i></button>
+        </header>
+        <section class="modal-card-body">
+          <h2 class="title">What Is the Pomodoro Technique?</h2>
+          <p>
+            Developed by <strong>Francesco Cirillo</strong> in the late 1980s, the <strong>Pomodoro Technique</strong> is a renowned
+            <em>time management method</em>. It breaks work into <em>25-minute intervals</em>, known as <strong>Pomodoros</strong>, separated by short
+            breaks—inspired by the tomato-shaped kitchen timer Cirillo used in university.
+          </p>
+
+          <h2 class="title">How It Works</h2>
+          <p>The technique is straightforward:</p>
+          <ul>
+            <li><strong>Choose a task</strong> you want to work on.</li>
+            <li><strong>Set the timer</strong> for 25 minutes.</li>
+            <li><strong>Work on the task</strong> until the timer rings</li>
+            <li><strong>Take a 5-minute break</strong>.</li>
+            <li>After <strong>four Pomodoros</strong>, take a <strong>longer break</strong> (15-30 minutes).</li>
+          </ul>
+
+          <h2 class="title">Why Use This App?</h2>
+          <p>
+            Our app enhances the Pomodoro Technique by offering a <strong>customizable timer</strong>, <strong>automatic break scheduling</strong>,
+            and tools to <strong>monitor productivity</strong> over time. It's designed to help you <em>stay focused, manage time efficiently</em>,
+            and <em>achieve tasks effortlessly</em>.
+          </p>
+        </section>
+        <footer class="modal-card-foot">
+          <button class="close-button button">Got it!</button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="js/main.js"></script>
+    <script src="js/themes.js"></script>
+    <script src="js/todo.js"></script>
+    <script src="js/settings.js"></script>
+  </body>
+</html>
